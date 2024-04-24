@@ -1,16 +1,36 @@
-/* Basic styles for the game container and card layout */
+h1 {
+  display: flex;
+  justify-content: center;
+  width: 100%; /* Full width for the heading to center it */
+  margin: 1.25em auto; /* 20px equivalent top and bottom margin, auto for horizontal */
+  margin-bottom: -.30em;
+  font-size: 2.5em; /* Large font size for heading */
+}
+
+#settings-form {
+  border: #333 double 0.5em;
+  border-radius: 5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.625em; /* Space between form elements */
+  width: 18.75em; /* 300px equivalent width */
+  padding: 1.25em; /* Padding inside the form */
+  margin: 1.25em auto; /* Centers the form horizontally and adds vertical spacing */
+}
+
 #game-container {
   display: flex;
   flex-wrap: wrap;
-  width: 600px; /* Adjust based on your layout */
-  margin: 20px auto;
-  justify-content: space-around;
+  width: 600px; /* Set to a fixed width or percentage as per design requirements */
+  margin: 1.25em auto; /* Center the container horizontally and add top margin */
+  justify-content: space-around; /* Distributes space around items evenly */
 }
 
 .card {
-  width: 100px; /* Adjust size as needed */
-  height: 150px;
-  margin: 10px;
+  width: 100px; /* Set card width */
+  height: 150px; /* Set card height */
+  margin: 0.625em; /* Adds spacing around cards, adjusted from 10px */
   position: relative;
   cursor: pointer;
   transform-style: preserve-3d;
@@ -22,31 +42,30 @@
   height: 100%;
 }
 
-/* Style for the front and back of the card */
 .card-front, .card-back {
   position: absolute;
   width: 100%;
   height: 100%;
-  backface-visibility: hidden; /* Keeps the back side hidden when the card is flipped */
-  border-radius: 10px; /* Optional rounded corners */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Optional shadow for better visibility */
+  backface-visibility: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .card-front {
   background-image: url("https://images.unsplash.com/photo-1420593248178-d88870618ca0?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzJ8fHRyZWVzfGVufDB8fDB8fHww"); 
-  background-size: cover; /* This will cover the entire area of the card-front */
-    background-position: center; /* Centers the background image in the card */
-    background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .card-back {
-  background: #333; /* Typically a neutral color, adjust as needed */
+  background: #333;
   color: rgb(255, 183, 183);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px; /* Adjust as needed */
-  transform: rotateY(180deg); /* Rotates the back initially */
+  font-size: 1.25em; /* Scaled from 20px */
+  transform: rotateY(180deg);
 }
 
 .card.flip {

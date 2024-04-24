@@ -17,7 +17,7 @@ async function fetchCardsData() {
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+        [array[i], array[j]] = [array[j], array[i]]; // Swap elements
     }
     return array;
 }
@@ -85,17 +85,61 @@ function handleCardClick(cardElement, card) {
 function resetBoard() {
     [firstCard, lockBoard] = [null, false];
 }
+document.getElementById('settings-form').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent the form from submitting normally
+    const numCards = parseInt(document.getElementById('num-cards').value, 10);
+    setupGame(numCards);  // Call setupGame function when form is submitted
+});
 
-// Sets up the game with a specified number of cards
+document.getElementById('reset').addEventListener('click', function() {
+    const numCards = parseInt(document.getElementById('num-cards').value, 10);
+    resetGame(numCards);  // Reset the game when reset button is clicked
+});
+
 async function setupGame(numCards) {
     const cardsData = await fetchCardsData();
     if (cardsData.length > 0) {
-        let cards = cardsData.slice(0, numCards / 2); // Adjust number of cards based on parameter
+        // Shuffle the full set of cards data first
+        let shuffledCards = shuffle(cardsData);
+
+        // Now, slice the array to get half the number of required cards since each card needs a match
+        let selectedCards = shuffledCards.slice(0, numCards / 2);
+
+        // Prepare double cards for matching pairs
+        let gameCards = selectedCards.map(card => ([{ ...card, isImage: false }, { ...card, isImage: true }])).flat();
+        
+        // Shuffle the double cards to mix names and images
+        gameCards = shuffle(gameCards);
+
+        // Display the cards
+        displayCards(gameCards);
+    } else {
+        console.log('No data available to set up the game');
+    }
+}
+function displayCards(cards) {
+    const gameContainer = document.getElementById('game-container');
+    gameContainer.innerHTML = ''; // Clear previous game setup
+    cards.forEach(card => {
+        const cardEl = createCardElement(card, card.isImage);
+        gameContainer.appendChild(cardEl);
+    });
+}
+
+function resetGame(numCards) {
+    const gameContainer = document.getElementById('game-container');
+    gameContainer.innerHTML = '';  // Clear the game board
+    setupGame(numCards);  // Re-setup the game with the same number of cards
+}
+
+function prepareGame(cardsData, numCards) {
+    if (cardsData.length > 0) {
+        let cards = cardsData.slice(0, numCards / 2);
         let doubleCards = cards.map(card => ([{...card, isImage: false}, {...card, isImage: true}])).flat();
         doubleCards = shuffle(doubleCards);
 
         const gameContainer = document.getElementById('game-container');
-        gameContainer.innerHTML = ''; // Clear previous game setup
+        gameContainer.innerHTML = '';
         doubleCards.forEach(card => {
             const cardEl = createCardElement(card, card.isImage);
             gameContainer.appendChild(cardEl);
@@ -105,6 +149,4 @@ async function setupGame(numCards) {
     }
 }
 
-// Example: setup the game with 8 cards (even number required)
-setupGame(8);
 
